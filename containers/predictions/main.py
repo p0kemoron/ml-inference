@@ -12,4 +12,4 @@ def root_route():
 # Define the heartbeat
 @app.get('/hearbeat')
 def heartbeat():
-  return { 'error': 'Use GET /prediction instead of the root route!' }
+  return { 'heartbeat': 'Service Ok' }
