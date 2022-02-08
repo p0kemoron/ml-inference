@@ -1,0 +1,6 @@
+celery==5.2.0
+fastapi==0.73.0
+flower==1.0.0
+redis==3.5.3
+requests==2.27.1
+uvicorn==0.17.4
