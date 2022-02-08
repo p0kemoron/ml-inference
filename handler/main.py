@@ -6,7 +6,7 @@ from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
 from setup_db import database, task_results, input_features
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from workers import get_score, create_task
+from workers import get_score
 from celery.result import AsyncResult
 
 app = FastAPI()
