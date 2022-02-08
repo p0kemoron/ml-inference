@@ -3,7 +3,7 @@ import logging
 
 from typing import List
 from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
-from setup_db import initdb
+from setup_db import initdb, database
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from workers import get_score, create_task
@@ -13,7 +13,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def setup_backend_db():
-  await initdb()
+  await database.connect()
 
 
 # Define the heartbeat
