@@ -2,14 +2,10 @@ import os
 from celery import Celery
 from ml.score_reports import ScoreReportsDummyModel
 
-BROKER_URI = os.getenv('BROKER_URI')
-BACKEND_URI = os.getenv('BACKEND_URI')
+app = Celery()
 
-app = Celery(
-    'queue',
-    broker=BROKER_URI,
-    backend=BACKEND_URI
-)
+app.conf.broker_url = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379")
+app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379")
 
 @app.task(ignore_result=False)
 def create_task():
