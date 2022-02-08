@@ -20,13 +20,13 @@ def heartbeat():
 async def get_task_id(data: List[RequestBody], status_code=201, response_model=SubmittedTask):
   pred_data = get_pred_df()
   task = create_task.delay()
-  return JSONResponse({"task_id":task.id})
+  return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
 
-@app.post('/task/{task_id}', status_code=200, response_model=FetchedScore, responses={201: {'model': SubmittedTask}})
+@app.post('/task/{task_id}', status_code=200, response_model=FetchedScore, responses={202: {'model': SubmittedTask}})
 async def get_report_score(task_id):
   task = AsyncResult(task_id)
   if not task.ready():
     return JSONResponse(status_code=201, content={'task_id': str(task_id), 'status': 'Processing'})
-  result = task.get()
+
   return {"task_id": str(task_id), "status": str(task.status), "score": float(task.result)}
