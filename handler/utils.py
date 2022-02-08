@@ -1,10 +1,9 @@
 from pydantic import BaseModel
 from typing import Literal
-import random
 
-def get_predictions(pred_df):
-    return random.random()
 
+def get_pred_df():
+    return None
 
 class RequestModel(BaseModel):
     abuse_type: Literal['MSG', 'PRF']           # Source of report

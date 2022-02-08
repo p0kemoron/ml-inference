@@ -2,8 +2,9 @@ import uvicorn
 import logging
 
 from typing import List
-from .utils import RequestModel, get_pred_df
+from utils import RequestModel, get_pred_df
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.responses import JSONResponse
 from queue.worker_tasks import get_score, create_task
 
 app = FastAPI()
@@ -15,9 +16,9 @@ def index():
 
 @app.post('/prediction')
 async def get_task_id(data: List[RequestModel]):
-  pred_data = get_pred_df(data)
-  task_id = create_task.delay(pred_data)
-  return {"task_id":str(task_id)}
+  pred_data = get_pred_df()
+  task = create_task.delay()
+  return JSONResponse({"task_id":task.id})
 
 
 # Define the heartbeat
@@ -26,5 +27,5 @@ def heartbeat():
   return { "message": "Service Ok" }
 
 
-if __name__=="__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+# if __name__=="__main__":
+    # uvicorn.run(app, host="0.0.0.0", port=8080)
