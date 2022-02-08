@@ -17,7 +17,7 @@ services:
 
   worker:
     build: ./handler
-    command: celery worker --app=queue.workers.app --loglevel=info --logfile=logs/celery.log
+    command: celery --app=workers.app worker --loglevel=info --logfile=logs/celery.log
     volumes:
       - ./handler:/app
     environment:
