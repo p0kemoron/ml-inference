@@ -3,7 +3,7 @@ import os
 import random
 # import pandas as pd
 
-MODEL_PATH = os.environ['MODEL_PATH']
+MODEL_PATH = os.getenv('MODEL_PATH')
 
 class ScoreReportsDummyModel():
     """[summary]
