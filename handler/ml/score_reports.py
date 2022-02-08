@@ -1,7 +1,7 @@
-import joblib
+# import joblib
 import os
 import random
-import pandas as pd
+# import pandas as pd
 
 MODEL_PATH = os.environ['MODEL_PATH']
 

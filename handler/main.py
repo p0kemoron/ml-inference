@@ -5,7 +5,7 @@ from typing import List
 from utils import RequestModel, get_pred_df
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from queue.worker_tasks import get_score, create_task
+from workers import get_score, create_task
 
 app = FastAPI()
 

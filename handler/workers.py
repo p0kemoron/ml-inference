@@ -1,6 +1,6 @@
 import os
 from celery import Celery
-from .ml.score_reports import ScoreReportsDummyModel
+from ml.score_reports import ScoreReportsDummyModel
 
 BROKER_URI = os.environ['BROKER_URI']
 BACKEND_URI = os.environ['BACKEND_URI']
