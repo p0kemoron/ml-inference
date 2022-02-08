@@ -3,7 +3,7 @@ import databases
 import sqlalchemy
 
 
-DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URI", "postgresql+psycopg2://admin:password@postgres:5432/results")
+DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URI", "postgresql://admin:password@postgres:5432/results")
 
 database = databases.Database(DATABASE_URL)
 
