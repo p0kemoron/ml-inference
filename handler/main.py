@@ -3,7 +3,7 @@ import logging
 
 from typing import List
 from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
-from setup_db import initdb, database
+from setup_db import database, task_results, input_features
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from workers import get_score, create_task
@@ -26,6 +26,8 @@ def heartbeat():
 async def get_task_id(data: List[RequestBody], status_code=201, response_model=SubmittedTask):
   pred_data = get_pred_df()
   task = get_score.delay()
+  query = input_features.insert()
+  await database.execute_many(query=query, values=data)
   return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
 

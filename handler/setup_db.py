@@ -32,6 +32,3 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 metadata.create_all(engine)
 
-def initdb():
-    database.connect()
-
