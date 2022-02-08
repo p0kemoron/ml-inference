@@ -21,9 +21,9 @@ services:
     volumes:
       - ./handler:/app
     environment:
-      - BROKER_URI=redis://redis:6379/0
-      - BACKEND_URI=redis://redis:6379/0
-      - MODEL_PATH=
+      - BROKER_URI="redis://redis:6379/0"
+      - BACKEND_URI="redis://redis:6379/0"
+      - MODEL_PATH=""
     depends_on:
       - handler
       - redis
