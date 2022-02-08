@@ -16,7 +16,7 @@ services:
       - redis
 
   worker:
-    build: .
+    build: ./handler
     command: celery worker --app=queue.workers.app --loglevel=info --logfile=logs/celery.log
     volumes:
       - ./handler:/app
