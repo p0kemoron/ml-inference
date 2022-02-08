@@ -3,12 +3,18 @@ import logging
 
 from typing import List
 from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
+from setup_db import initdb
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from workers import get_score, create_task
 from celery.result import AsyncResult
 
 app = FastAPI()
+
+@app.on_event("startup")
+async def setup_backend_db():
+  await initdb()
+
 
 # Define the heartbeat
 @app.get('/heartbeat')

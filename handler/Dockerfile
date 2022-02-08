@@ -5,8 +5,8 @@ FROM python:3.8.9-slim
 WORKDIR /app
 
 # set environment variables
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN pip install --upgrade pip

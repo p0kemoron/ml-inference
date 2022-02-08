@@ -10,10 +10,11 @@ services:
     volumes:
       - ./handler:/app
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL: redis://redis:6379/0
+      - CELERY_RESULT_BACKEND: redis://redis:6379/0
     depends_on:
       - redis
+      - postgres
 
   worker:
     build: ./handler
@@ -21,14 +22,19 @@ services:
     volumes:
       - ./handler:/app
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL: redis://redis:6379/0
+      - CELERY_RESULT_BACKEND: redis://redis:6379/0
+      - SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://admin:password@postgres:5432/results
     depends_on:
       - handler
       - redis
+      - postgres
 
   redis:
     image: redis:6-alpine
+
+  postgres:
+    image: postgres:latest
 
   # dashboard:
   #   build: ./project
