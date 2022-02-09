@@ -43,15 +43,15 @@ services:
       POSTGRES_DB: results
     
 
-  # dashboard:
-  #   build: ./project
-  #   command:  flower --app=worker.celery --port=5555 --broker=redis://redis:6379/0
-  #   ports:
-  #     - 5556:5555
-  #   environment:
-  #     - CELERY_BROKER_URL=redis://redis:6379/0
-  #     - CELERY_RESULT_BACKEND=redis://redis:6379/0
-  #   depends_on:
-  #     - web
-  #     - redis
-  #     - worker
+  dashboard:
+    build: ./project
+    command:  flower --app=app.workers.cel_app --port=5555 --broker=redis://redis:6379/0
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - handler
+      - redis
+      - worker
