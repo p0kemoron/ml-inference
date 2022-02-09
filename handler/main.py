@@ -37,7 +37,7 @@ async def get_task_id(data: List[RequestBody], status_code=201, response_model=S
   return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
 
-@app.post('/task/{task_id}', status_code=200, response_model=FetchedScore, responses={202: {'model': SubmittedTask}})
+@app.get('/task/{task_id}', status_code=200, response_model=FetchedScore, responses={202: {'model': SubmittedTask}})
 async def get_report_score(task_id):
   task = AsyncResult(task_id)
   if not task.ready():
