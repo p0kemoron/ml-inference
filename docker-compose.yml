@@ -41,17 +41,4 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: results
-    
 
-  dashboard:
-    build: ./handler
-    command:  flower --app=app.workers.cel_app --port=5555 --broker=redis://redis:6379/0
-    ports:
-      - 5566:5555
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    depends_on:
-      - handler
-      - redis
-      - worker

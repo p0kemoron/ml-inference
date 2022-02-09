@@ -74,11 +74,10 @@ I am using Celery (+ Redis broker) to communicate between submitted jobs and com
 Backend is based on PostgreSQL. I initially used Redis both as a broker and backend for simplicity's sake but I thought using Postgresql primarily because it offers better reliability wrt Redis.
 Also, ideally we'd like to keep our broker and backend separate. Again, it's already in use and would reduce the overhead in bringing it together. Using Postgres also allowed me to stick to best practices in terms of defining a data model and using an ORM library.
 
-**Monitoring**
-For monitoring, Flower dashboard is being used. I do not have very strong reasons to be using this. I've been used to cloud native monitoring solutions so I spent some time reading about what generally works with Celery in absence of cloud environment, and arrived at Flower because it was suggested in Celery's official documentation. I think MLFLow's monitoring library
+**Monitoring (not implemented)**
+For monitoring, I would have used Flower dashboard. I do not have very strong reasons to be using this. I've been used to cloud native monitoring solutions so I spent some time reading about what generally works with Celery in absence of cloud environment, and arrived at Flower because it was suggested in Celery's official documentation. I think MLFLow's monitoring library should also have suffcied.
 
-![Basic Architecture Diagram](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)  
-A very crude architecture diagram showing the working parts
+While monitoring is hugely important, I've chosen to ignore to implement this for now as I was over the time already. I believe it is one of the steps in the later stages of the process (still before production) as in the initial stages development is the key concern.
 
 
 ## Current limitations
@@ -87,6 +86,7 @@ There are definitely a lot of shortcomings in this version of the app as it is d
 1. Expanding test cases and coverage. Although, this version of the app has been tested thoroughly (edge cases etc), they are not a match for an automated testing framework
 2. Models are currently being loaded by celery workers in memory (assumming this path file is coming from a GCS bucket or similar). This may be inefficient and I would like to deploy it using an Endpoint so for each task, it is not loaded in memory again
 3. Logging: Logs are being generated in the `logs/` directory for workers and also available via docker-composer logs for all of the services. While these are sufficient for troubleshooting, granular INFO level logs need to be included in order to make sure the REST APIs logs are production ready.
+4. Monitoring: As detailed above, monitoring is hugely important to track model performance and mitigate against any drift or performance reduction.
 
 
 ## Path towards production
