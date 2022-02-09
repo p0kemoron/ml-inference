@@ -3,9 +3,10 @@ import logging
 import json
 
 from typing import List
-from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
-from setup_db import database, task_results, input_features
-from fastapi import FastAPI, File, UploadFile, HTTPException, Request
+from utils.data_models import RequestBody, SubmittedTask, FetchedScore
+from utils.setup_db import database, task_results, input_features
+from utils.ml.ml_utils import get_pred_df
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from workers import get_score
 from celery.result import AsyncResult
