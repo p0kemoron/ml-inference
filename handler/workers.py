@@ -1,7 +1,7 @@
 import os
 import time
 from celery import Celery
-from ml.score_reports import ScoreReportsDummyModel
+from utils.ml.ml_utils import ScoreReportsDummyModel
 
 cel_app = Celery()
 

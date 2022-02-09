@@ -1,4 +1,4 @@
-
+# Update constants here
 CATEGORICAL_FEATURES = [
     "abuse_type",
     ]
