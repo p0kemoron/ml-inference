@@ -4,7 +4,7 @@ import logging
 from typing import List
 from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
 from setup_db import database, task_results, input_features
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Request
 from fastapi.responses import JSONResponse
 from workers import get_score
 from celery.result import AsyncResult
@@ -27,7 +27,7 @@ async def get_task_id(data: List[RequestBody], status_code=201, response_model=S
   pred_data = get_pred_df()
   task = get_score.delay()
   query = input_features.insert()
-  await database.execute_many(query=query, values=data)
+  await database.execute_many(query=query, values=data.json())
   return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
 
