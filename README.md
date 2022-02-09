@@ -45,7 +45,7 @@ The following API calls are available as a part of this app:
 
 Method | URL | Parameter | Description
 --- | --- | --- | ---
-POST | http://127.0.0.1:8081/predict | abuse_type, report_text_len, profile_rating, popularity, lifetime_matches_created | Submits a task job to the API to fetch scores for the report
+POST | http://127.0.0.1:8081/submit | abuse_type, report_text_len, profile_rating, popularity, lifetime_matches_created | Submits a task job to the API to fetch scores for the report
 GET | http://127.0.0.1:8081/task/<task_id> | - | Returns info for a particular task_id 
 GET | http://127.0.0.1:8081/heartbeat | - | Checks if API is active
 
@@ -61,7 +61,7 @@ The application is designed to be asynchronous. This allows it to be freely avai
 Although not a lot of information was provided specific to the usecase, I can safely assume the data is related to profile and message reports submitted by users. In these cases, corrective steps taken with a delay of order of minutes should generally be okay.
 ` `  
   
-Moving on to the architecture, there five services built. Gateway to parse incoming requests: 'handler', a queue to store submitted jobs and track, workers to actually do the computation, backend database to persist incoming data and predictions, and a monitoring dashboard. All of the parts are decoupled from each other and containerized separately, if one were to fail, the rest of the app works fine.
+Moving on to the architecture, there are four services built. Gateway to parse incoming requests: 'handler', a queue to store submitted jobs and track, workers to actually do the computation, backend database to persist incoming data and predictions. All of the parts are decoupled from each other and containerized separately, if one were to fail, the rest of the app works fine.
 ` `  
 
 **Handler**
@@ -87,9 +87,9 @@ There are definitely a lot of shortcomings in this version of the app as it is d
 2. Models are currently being loaded by celery workers in memory (assumming this path file is coming from a GCS bucket or similar). This may be inefficient and I would like to deploy it using an Endpoint so for each task, it is not loaded in memory again
 3. Logging/Exceptions Handling: Logs are being generated in the `logs/` directory for workers and also available via docker-composer logs for all of the services. While these are sufficient for troubleshooting, granular INFO level logs need to be included in order to make sure the REST APIs logs are production ready.
 
-On a similar note, the current version of the API does not provide custom HTTP Responses based on different scenarios i.e. exception handling needs to be done in some cases (task_id does not exist etc). However, the user inputs are validated using pydantic so loose calls aren't allowed, but the customization of error messages needs to be done.
+4. On a similar note, the current version of the API does not provide custom HTTP Responses based on different scenarios i.e. exception handling needs to be done in some cases (task_id does not exist etc). However, the user inputs are validated using pydantic so loose calls aren't allowed, but the customization of error messages needs to be done.
 
-4. Monitoring: As detailed above, monitoring is hugely important to track model performance and mitigate against any drift or performance reduction.
+5. Monitoring: As detailed above, monitoring is hugely important to track model performance and mitigate against any drift or performance reduction.
 
 
 ## Path towards production
@@ -107,7 +107,7 @@ API gateway can be introduced (currently this is same as 'handler') as the API m
 ### Efficiency
 The API can be made a lot more efficient in case our requests are repetitive in nature (i.e. similar kinds of profiles being reported maybe?), it might make sense for us to make use of cache stores.
 
-As mentioned above, the models are being loaded into memory and it may not be feasible to do that as models grow complex and there should be deployed via an endpoint (hosted over cloud or on-prem) which our workers can make calls to.
+As mentioned above, the models are being loaded into memory and it may not be feasible to do that as models grow complex and there should be deployed via an endpoint (hosted over cloud or on-prem) which our workers can make calls to. Since the next model being developed in Tensorflow, it would make sense to use tf serve to manage the endpoints (maybe tfx for the pipeline)
 
 ### Model Deployment
 CI/CD workflows with automated tests (both unit tests for functions as well as integration tests) would be necessary. In this repo, I've stored a dummy model class in `handler/app/utils/ml`. In production environment, this should have a separate pipeline (triggered via push to remote branch) which would automatically compile and build artifacts for the trained model, and make it ready to be deployed once human approval is provided.
