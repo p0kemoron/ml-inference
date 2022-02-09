@@ -32,7 +32,7 @@ async def get_task_id(data: List[RequestBody], status_code=201, response_model=S
   task = get_score.delay(pred_data)
 
   query = input_features.insert().values(id=task.id, features=data_json)
-  database.execute(query)
+  await database.execute(query)
   
   return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
@@ -42,5 +42,8 @@ async def get_report_score(task_id):
   task = AsyncResult(task_id)
   if not task.ready():
     return JSONResponse(status_code=201, content={'task_id': str(task_id), 'status': 'Processing'})
+    
+  query = task_results.insert().values(id=task.id, scores=str(task.result))
+  await database.execute(query)
 
   return {"task_id": str(task_id), "status": str(task.status), "score": task.result}

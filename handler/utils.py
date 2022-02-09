@@ -3,7 +3,7 @@ import json
 from lib2to3.pytree import Base
 import string
 from pydantic import BaseModel
-from typing import Literal
+from typing import Literal, List
 from ml.constants import CATEGORICAL_FEATURES, NUMERICAL_FEATURES
 
 def get_pred_df(data):
@@ -31,4 +31,4 @@ class SubmittedTask(BaseModel):
 class FetchedScore(BaseModel):
     task_id: str
     status: str
-    score: float
+    score: List[float]

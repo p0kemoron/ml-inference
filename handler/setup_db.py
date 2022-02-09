@@ -13,7 +13,6 @@ task_results = sqlalchemy.Table(
     "task_results",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.String, primary_key=True),
-    # Storing array of scores as a string - quick and dirty approach
     sqlalchemy.Column("scores", sqlalchemy.String),
 )
 
@@ -21,6 +20,7 @@ input_features = sqlalchemy.Table(
     "input_features",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.String, primary_key=True),
+    # Storing dict of features as a string - quick and dirty approach
     sqlalchemy.Column("features", sqlalchemy.String),
 )
 
