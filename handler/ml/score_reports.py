@@ -18,7 +18,10 @@ class ScoreReportsDummyModel():
         # Import necessary libraries here
         pass
 
-    def predict(self):
-        return random.random()
+    def predict(self, pred_df):
+        preds = []
+        for i in range(len(pred_df)):
+            preds.append(random.random())
+        return preds
 
     # Other functions can be added as required

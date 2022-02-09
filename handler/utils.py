@@ -1,10 +1,20 @@
+import pandas as pd
+import json
 from lib2to3.pytree import Base
 import string
 from pydantic import BaseModel
 from typing import Literal
+from ml.constants import CATEGORICAL_FEATURES, NUMERICAL_FEATURES
 
-def get_pred_df():
-    return None
+def get_pred_df(data):
+    df = pd.DataFrame([eval(x.json()) for x in data])
+    for col in CATEGORICAL_FEATURES:
+        df = pd.concat(pd.get_dummies(df[col],prefix=col),df,axis=1).drop([col],axis=1)
+    for col in NUMERICAL_FEATURES:
+        # Add scaling/normalization
+        pass
+    # Other processing
+    return df
 
 class RequestBody(BaseModel):
     abuse_type: Literal['MSG', 'PRF']           # Source of report
