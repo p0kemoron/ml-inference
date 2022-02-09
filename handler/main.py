@@ -24,10 +24,11 @@ def heartbeat():
 
 @app.post('/submit')
 async def get_task_id(data: List[RequestBody], status_code=201, response_model=SubmittedTask):
+  data_json = [x.json() for x in data]
   pred_data = get_pred_df()
   task = get_score.delay()
   query = input_features.insert()
-  await database.execute_many(query=query, values=data.json())
+  await database.execute_many(query=query, values=data_json)
   return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
 
