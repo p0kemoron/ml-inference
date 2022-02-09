@@ -1,7 +1,7 @@
 # import joblib
 import os
 import random
-# import pandas as pd
+import pandas as pd
 
 MODEL_PATH = os.getenv('MODEL_PATH')
 
@@ -18,9 +18,10 @@ class ScoreReportsDummyModel():
         # Import necessary libraries here
         pass
 
-    def predict(self, pred_df):
+    def predict(self, pred_data):
+        df = pd.DataFrame(pred_data)
         preds = []
-        for i in range(len(pred_df)):
+        for i in range(len(df)):
             preds.append(random.random())
         return preds
 

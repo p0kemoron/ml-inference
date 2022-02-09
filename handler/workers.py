@@ -9,6 +9,6 @@ cel_app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://l
 
 
 @cel_app.task(ignore_result=False)
-def get_score(pred_df):
+def get_score(pred_data):
     model = ScoreReportsDummyModel()
-    return model.predict(pred_df)
+    return model.predict(pred_data)
