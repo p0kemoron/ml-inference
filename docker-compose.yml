@@ -6,7 +6,7 @@ services:
     build: ./handler
     ports:
       - 8081:8000
-    command: uvicorn main:app --host 0.0.0.0 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
     volumes:
       - ./handler:/app
     environment:
@@ -18,7 +18,7 @@ services:
 
   worker:
     build: ./handler
-    command: celery worker --app=workers.cel_app --loglevel=info --logfile=logs/celery.log
+    command: celery worker --app=app.workers.cel_app --loglevel=info --logfile=logs/celery.log
     volumes:
       - ./handler:/app
     environment:

@@ -3,12 +3,15 @@ import databases
 import sqlalchemy
 
 
-DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URI", "postgresql://admin:password@postgres:5432/results")
+DATABASE_URL = os.environ.get(
+    "SQLALCHEMY_DATABASE_URI", "postgresql://admin:password@postgres:5432/results"
+)
 
 database = databases.Database(DATABASE_URL)
 
 metadata = sqlalchemy.MetaData()
 
+# Define the backend tables and their schema
 task_results = sqlalchemy.Table(
     "task_results",
     metadata,
@@ -27,4 +30,3 @@ input_features = sqlalchemy.Table(
 engine = sqlalchemy.create_engine(DATABASE_URL)
 
 metadata.create_all(engine)
-
