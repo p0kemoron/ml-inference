@@ -2,14 +2,18 @@ import uvicorn
 import logging
 import json
 
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from fastapi.logger import logger as fastapi_logger
+
 from typing import List
+from celery.result import AsyncResult
+
 from .utils.data_models import RequestBody, SubmittedTask, FetchedScore
 from .utils.setup_db import database, task_results, input_features
 from .utils.ml.ml_utils import get_pred_df
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 from .workers import get_score
-from celery.result import AsyncResult
+
 
 app = FastAPI()
 
