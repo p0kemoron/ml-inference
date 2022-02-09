@@ -13,19 +13,15 @@ task_results = sqlalchemy.Table(
     "task_results",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.String, primary_key=True),
-    sqlalchemy.Column("status", sqlalchemy.String),
-    sqlalchemy.Column("score", sqlalchemy.Float),
+    # Storing array of scores as a string - quick and dirty approach
+    sqlalchemy.Column("scores", sqlalchemy.String),
 )
 
 input_features = sqlalchemy.Table(
     "input_features",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.String, primary_key=True),
-    sqlalchemy.Column("abuse_type", sqlalchemy.String),
-    sqlalchemy.Column("report_text_len", sqlalchemy.Integer),
-    sqlalchemy.Column("profile_rating", sqlalchemy.Float),
-    sqlalchemy.Column("popularity", sqlalchemy.Integer),
-    sqlalchemy.Column("lifetime_matches_created", sqlalchemy.Integer),
+    sqlalchemy.Column("features", sqlalchemy.String),
 )
 
 engine = sqlalchemy.create_engine(DATABASE_URL)

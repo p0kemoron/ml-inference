@@ -1,5 +1,6 @@
 import uvicorn
 import logging
+import json
 
 from typing import List
 from utils import RequestBody, SubmittedTask, FetchedScore, get_pred_df
@@ -24,14 +25,13 @@ def heartbeat():
 
 @app.post('/submit')
 async def get_task_id(data: List[RequestBody], status_code=201, response_model=SubmittedTask):
-  print(type(data))
-  data_json = [x.json() for x in data]
-  print(type(data_json))
-  print(type(data_json[0]), type(data_json[1]))
+  
+  data_json = json.dumps([x.json() for x in data])
+
   pred_data = get_pred_df()
   task = get_score.delay()
-  query = input_features.insert()
-  # await database.execute_many(query=query, values=data_json)
+  query = input_features.insert().values(id=task.id, features=data_json)
+  await database.execute_many(query)
   return JSONResponse({"task_id":task.id, "status": str(task.status)})
 
 
