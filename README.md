@@ -85,7 +85,10 @@ There are definitely a lot of shortcomings in this version of the app as it is d
 
 1. Expanding test cases and coverage. Although, this version of the app has been tested thoroughly (edge cases etc), they are not a match for an automated testing framework
 2. Models are currently being loaded by celery workers in memory (assumming this path file is coming from a GCS bucket or similar). This may be inefficient and I would like to deploy it using an Endpoint so for each task, it is not loaded in memory again
-3. Logging: Logs are being generated in the `logs/` directory for workers and also available via docker-composer logs for all of the services. While these are sufficient for troubleshooting, granular INFO level logs need to be included in order to make sure the REST APIs logs are production ready.
+3. Logging/Exceptions Handling: Logs are being generated in the `logs/` directory for workers and also available via docker-composer logs for all of the services. While these are sufficient for troubleshooting, granular INFO level logs need to be included in order to make sure the REST APIs logs are production ready.
+
+On a similar note, the current version of the API does not provide custom HTTP Responses based on different scenarios i.e. exception handling needs to be done in some cases (task_id does not exist etc). However, the user inputs are validated using pydantic so loose calls aren't allowed, but the customization of error messages needs to be done.
+
 4. Monitoring: As detailed above, monitoring is hugely important to track model performance and mitigate against any drift or performance reduction.
 
 
